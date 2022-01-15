@@ -52,28 +52,11 @@ exports.download = async (req, res, next) => {
         .json({ msg: "File not found or file expired", expired: true });
     }
     if (linkObj) {
-      res.download(`${__dirname}/../uploads/${req.params.download}`);
-
-      if (linkObj.downloads === 1) {
-        req.file = linkObj.fileName;
-
-        //Delete the link in the database
-        setTimeout(async () => {
-
-        await Link.findOneAndDelete({
-          fileName: req.params.download,
-        });
-        fs.unlinkSync(`${__dirname}/../uploads/${req.params.download}`);
-        res.status(200).json({ msg: "File deleted successfully" });
-      }, 2000);
-
-        
-      } else {
-        linkObj.downloads--;
+      if (linkObj.downloads > 0) {
+        res.download(`${__dirname}/../uploads/${req.params.download}`);
+        linkObj.downloads = linkObj.downloads - 1;
         await linkObj.save();
       }
-
-      
     }
   } catch (error) {
     console.error(error.message);
