@@ -19,7 +19,10 @@ const deleteExpiredLinksAndFiles = async () => {
         fs.unlinkSync(`${__dirname}/../uploads/${link.fileName}`);
       });
 
-      await Link.deleteMany({ expires: { $lte: Date.now() } });
+      //Delete links
+      await Link.deleteMany({
+        $or: [{ expires: { $lt: Date.now() } }, { downloads: 0 }],
+      });
 
       console.log("Expired links and files deleted");
     }
