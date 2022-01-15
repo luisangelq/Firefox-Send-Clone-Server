@@ -54,21 +54,28 @@ exports.download = async (req, res, next) => {
     if (linkObj) {
       res.download(`${__dirname}/../uploads/${req.params.download}`);
 
-      if (linkObj.downloads === 0) {
-        req.file = linkObj.fileName;
-
-        //Delete the link in the database
-        await Link.findOneAndDelete({
-          fileName: req.params.download,
-        });
-
-        return next();
-      }
-
       if (linkObj.downloads > 0) {
         linkObj.downloads = linkObj.downloads - 1;
         await linkObj.save();
       }
+
+      if (linkObj.downloads === 0) {
+        req.file = linkObj.fileName;
+
+        //Delete the link in the database
+        setTimeout(async () => {
+
+        await Link.findOneAndDelete({
+          fileName: req.params.download,
+        });
+        
+        return next();
+      }, 2000);
+
+        
+      }
+
+      
     }
   } catch (error) {
     console.error(error.message);
