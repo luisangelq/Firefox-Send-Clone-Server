@@ -68,8 +68,8 @@ exports.download = async (req, res, next) => {
         await Link.findOneAndDelete({
           fileName: req.params.download,
         });
-        
-        return next();
+        fs.unlinkSync(`${__dirname}/../uploads/${req.params.download}`);
+        res.status(200).json({ msg: "File deleted successfully" });
       }, 2000);
 
         
