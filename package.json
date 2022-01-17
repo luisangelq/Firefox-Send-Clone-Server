@@ -5,9 +5,6 @@
   "main": "index.js",
   "author": "Luis Quiñones",
   "license": "MIT",
-  "engines": { 
-    "node": "16.0.0" 
-  },
   "scripts": {
     "dev": "nodemon ./index.js",
     "start": "node ./index.js"
