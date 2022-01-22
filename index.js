@@ -9,7 +9,8 @@ const PORT = process.env.PORT || 8080; // default port 8080
 
 //Enable CORS for all routes
 const corsOptions = {
-    origin:'https://firefox-send-clone.netlify.app', 
+    //taking from environment variable
+    origin: process.env.FRONTEND_URL, 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
 }
